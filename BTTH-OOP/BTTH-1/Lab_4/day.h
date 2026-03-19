@@ -1,6 +1,8 @@
 #pragma once
 
-//  Khai báo lớp ngày trong năm.
+/*
+
+*/
 class doy
 {
     private:
