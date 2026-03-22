@@ -11,7 +11,7 @@ int doy :: getMonth() { return m; }
 int doy :: getYear() { return y; }
 
 bool check (int day, int month, int year)
-    { 
+    {
         return (day > 0 && day < 32)  // Để số ngày hợp lệ trong giới hạn từ 1 đến 31.
         && (month > 0 && month < 13) // Để số tháng giới hạn từ 1 đến 12.
         && year > 0;                // Để số năm luôn dương.
@@ -24,12 +24,12 @@ void Input(doy &x)
     while (true)
     {
     /*
-        Kiểm tra xem có nhập thành công hay không 
+        Kiểm tra xem có nhập thành công hay không
         (tức có nhập vào đúng kiểu hay không).
     */
         if (cin >> day >> month >> year)    
-        { 
-            if (check) break;   // Kiểm tra ngày, tháng, và năm.
+        {
+            if (check(day, month, year)) break;   // Kiểm tra ngày, tháng, và năm.
             else cout << "Loi nhap sai dinh dang ngay.\n";
         }
         else    // Nếu nhập không thành công, làm mới lại cin.
@@ -57,12 +57,13 @@ void Output (doy x)
     cout << '/' << year;
 }
 
-bool checkLeap (int y) { return (y % 400 == 0); }   // Năm nhuận sẽ chia hết cho 400.
+bool checkLeap (int y) { return (y % 400 == 0) || (y % 4 == 0 && y % 100 != 0); }   
+// Năm nhuận sẽ chia hết cho 400 hoặc chia hết cho 4 nhưng không chia hết cho 100..
 
 int limitDayinMonth (int month, int year)
 {
     switch(month)
-    {   
+    {  
         case 2: // Xét riêng trường hợp của tháng 2.
         {
             if (checkLeap(year)) return 29; // Năm nhuận thì tháng 2 có 29 ngày.
@@ -81,7 +82,7 @@ void addDay (doy &x)
 {
     int day = x.getDay(), month = x.getMonth(), year = x.getYear();
     if (day > 27)   // Xét trường hợp khi số ngày lớn hơn 27.
-    {   
+    {  
         int lim = limitDayinMonth(month, year);
 
         if (++day > lim)    // Tăng số ngày lên.

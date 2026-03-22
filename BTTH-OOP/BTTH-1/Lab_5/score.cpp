@@ -14,16 +14,17 @@ bool check(float i)
 
 void Input (hocsinh &x)
 {
-    string s; 
+    string s;
+    cin.ignore(10000, '\n'); // Bỏ qua 10000 kí tự cho đến khi gặp '\n' thì dừng.
     getline (cin, s);   // Nhập tên.
-    float t, v; 
+    float t, v;
     while (true)
     {
     /*
-        Kiểm tra xem có nhập thành công hay không 
+        Kiểm tra xem có nhập thành công hay không
         (tức có nhập vào đúng kiểu hay không).
     */
-        if (cin >> t >> v)   
+        if (cin >> t >> v)  
         {
         // Kiểm tra tính hợp lệ của điểm toán và điểm văn.
             if (check(t) && check (v)) break;
