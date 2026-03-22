@@ -10,7 +10,7 @@
     ------------------------------------------------------  
     Tính năng của phương thức :
         - setDOY : Thay giá trị cho ngày, tháng, năm.
-        - getDay, getMonth, getYear : Đọc và trả về giá 
+        - getDay, getMonth, getYear : Đọc và trả về giá
         trị của ngày, tháng, và năm.
 */
 class doy
@@ -35,7 +35,7 @@ class doy
         true hoặc false.
     ------------------------------------------------------
     Tính năng :
-        - Hàm giúp kiểm tra ngày, tháng, năm đã được nhập 
+        - Hàm giúp kiểm tra ngày, tháng, năm đã được nhập
         đúng hay chưa.
 */
 bool check (int day, int month, int year);
