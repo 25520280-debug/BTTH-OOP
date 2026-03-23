@@ -15,9 +15,10 @@ bool check(float i)
 void Input (hocsinh &x)
 {
     string s;
-    cin.ignore(10000, '\n'); // Bỏ qua 10000 kí tự cho đến khi gặp '\n' thì dừng.
+    cout << "Nhap ho ten hoc sinh: ";
     getline (cin, s);   // Nhập tên.
     float t, v;
+    cout << "Nhap diem toan va diem van: ";
     while (true)
     {
     /*

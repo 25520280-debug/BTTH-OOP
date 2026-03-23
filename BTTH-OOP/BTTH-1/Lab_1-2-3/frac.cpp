@@ -50,7 +50,7 @@ void Output (long long a, long long b)
 {
     if (a == 0) cout << 0 << '\n';  // Nếu tử số là 0, xuất thẳng 0.
     else if (b == 1) cout << a << '\n'; // Nếu mẫu bằng 1, chỉ xuất tử số.
-    else cout << a << '/' << b << '\n'; // Xuất như bình thường.
+    else cout << a << '/' << b << '\n' << '\n'; // Xuất như bình thường.
 }
 
 void sumFrac (frac i, frac j)

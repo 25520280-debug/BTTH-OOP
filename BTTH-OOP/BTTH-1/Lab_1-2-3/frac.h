@@ -1,4 +1,6 @@
 #pragma once // Tránh lỗi lặp định nghĩa.
+
+#include <iostream>
 /*
     Tên lớp : frac
     ------------------------------------------------------

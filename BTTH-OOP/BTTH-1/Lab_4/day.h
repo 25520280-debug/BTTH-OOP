@@ -1,5 +1,5 @@
 #pragma once // Tránh lỗi lặp định nghĩa.
-
+#include <iostream>
 /*
     Tên lớp : doy (day of year)
     ------------------------------------------------------
