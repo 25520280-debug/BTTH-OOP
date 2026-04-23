@@ -47,7 +47,7 @@ class edge : public vert {
         vert a, b;
         edge(){}
         edge(vert x, vert y) : a(x), b(y) {}
-        double getLength() {return sqrtf((a.x - b.x)*(a.x - b.x) + (a.y - b.y)*(a.y - b.y));}
+        const double getLength() {return sqrtf((a.x - b.x)*(a.x - b.x) + (a.y - b.y)*(a.y - b.y));}
 };
 
 class tri : protected edge{
@@ -99,6 +99,9 @@ class tri : protected edge{
 
         void printStat() {
             cout << "\nCoordinates :\n A" << this->i << " B" << this->j << " C" << this->k;
+            cout << "\nArea : " << this->triArea();
+            cout << "\nCircumference : " << this->triCir();
+            cout << "\nHow much do you want to scale this triangle?\n";
         }
 
         void ZoomIn(double x) {
@@ -124,9 +127,6 @@ class tri : protected edge{
         void printAll() {
             this->triType();
             this->printStat();
-            cout << "Area : " << this->triArea();
-            cout << "\nCircumference : " << this->triCir();
-            cout << "\nHow much do you want to scale this triangle?\n";
             double a; 
             while (true) {
                 if (cin >> a) break;
