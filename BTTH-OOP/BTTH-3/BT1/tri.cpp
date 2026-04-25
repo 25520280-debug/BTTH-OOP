@@ -1,174 +1,152 @@
 #include <iostream>
+#include <iomanip>
 #include <cmath>
 using namespace std;
 
-class vert {
-    public:
-        double x, y;
+double cleanNum(double x) {
+    if (fabs(x) < 1e-9) return 0;  
+    else return x;
+}
 
+class vert {
+    private : 
+        double x, y;
+    public:
         vert(){}
-        vert(double a, double b) : x(a), y(b) {}
+        vert(double a, double b): x(a), y(b) {}
+
+        double distance_X(const vert& other) {return this->x - other.x;}
+        double distance_Y(const vert& other) {return this->y - other.y;}
 
         friend istream& operator >> (istream& in, vert& p) {
-            in >> p.x >> p.y;
-            return in;
-        }
-        friend vert operator * (vert &p, double m) {
-            return vert(p.x * m, p.y * m);
-        }
-        friend vert operator / (vert &p, double m) {
-            return vert(p.x / m, p.y / m);
-        }
-        friend ostream& operator << (ostream& out, vert p) {
-            out << "( " << p.x << " ; " << p.y << " )\n";
-            return out;
-        }
-        void InputVertex(vert& x) {
             while (true) {
-                if (cin >> x) break;
+                if (in >> p.x >> p.y) break;
                 else {
-                    cout << "Error! Please try again!\n";
+                    cout << "Error! Please try again.\n";
                     cin.clear();
                     cin.ignore(10000,'\n');
                 }
             }
+            return in;
         }
-        void Revolve(double t) {
-            this->x = this->x*cos((M_PI*t)/180) - this->y*sin((M_PI*t)/180);
-            this->y = this->x*sin((M_PI*t)/180) + this->y*cos((M_PI*t)/180);        
+        friend ostream& operator << (ostream& out, vert& p) {
+            out << "( " << cleanNum(p.x) << " ; " << cleanNum(p.y) << " )";
+            return out;
         }
-        void Translate(double a, double b) {
-            this->x += a, this->y += b;
+        friend vert operator + (vert& p, double t) {return vert(p.x+t, p.y+t); }
+        friend vert operator * (vert& p, double t) {return vert(p.x*t, p.y*t); }
+        friend vert operator / (vert& p, double t) {return vert(p.x/t, p.y/t); }
+
+        vert Translate(double a, double b) {return vert(this->x + a, this->y + b); }
+        vert Revolve(double alpha) {
+            double rad = (alpha/180)*M_PI;
+            return vert(this->x*cos(rad) - this->y*sin(rad), this->x*sin(rad) + this->y*cos(rad));
         }
+        vert ZoomIn(double t) {return vert(this->x*t,this->y*t); }
+        vert ZoomOut(double t) {return vert(this->x/t,this->y/t); }
 };
 
-class edge : public vert {
-    public:
+class edge {
+    private:
         vert a, b;
+    public:
         edge(){}
-        edge(vert x, vert y) : a(x), b(y) {}
-        const double getLength() {return sqrtf((a.x - b.x)*(a.x - b.x) + (a.y - b.y)*(a.y - b.y));}
+        edge(vert A, vert B) : a(A), b(B) {}
+        
+        double getLength() {
+            double dis_X = a.distance_X(b), dis_Y = a.distance_Y(b);
+            return sqrt(dis_X*dis_X + dis_Y*dis_Y);
+        }
 };
 
-class tri : protected edge{
+class tri{
     private :
         vert i, j, k;
         edge a, b, c;
-    public:
+        double p;
+    public :
         tri(){}
-        double AB() {return c.getLength();};
-        double AC() {return b.getLength();};
-        double BC() {return a.getLength();};
-        double p()  {return (AB() + AC() + BC())/2;};
-        double check() {return p() * (p() - AB() )*(p() - AC() )*(p() - BC());};
-        void Input() {
-            while (true) {
-                cout << "Please enter the first vertex : "; InputVertex(this->i);
-                cout << "\nPlease enter the second vertex : "; InputVertex(this->j);
-                cout << "\nPlease enter the third vertex : "; InputVertex(this->k); 
-                this->a = edge(j,k), this->b = edge(i,k), this->c = edge(i,j);
-                if (this->check() > 0) break;
-                else cout << "Error : These coordinates cannot build up a triangle. Please try again!\n";
-            }
+        tri(vert m, vert n, vert o) : i(m), j(n), k(o), a(edge(j,k)), b(edge(i,k)), c(edge(i,j)) {
+            this->p = (a.getLength() + b.getLength() + c.getLength()) / 2;
         }
-
+        void Input() {
+            cout << "Please input the coordinate of the first vertex: "; cin >> this->i;
+            cout << "Please input the coordinate of the second vertex: "; cin >> this->j;
+            cout << "Please input the coordinate of the third vertex: "; cin >> this->k;
+            this->a = edge(j,k), this->b = edge(i,k), this->c = edge(i,j);
+            this->p = (this->a.getLength() + this->b.getLength() + this->c.getLength())/2; 
+        }
+        bool check() {
+            if (this->p*
+                (this->p - this->a.getLength())*
+                (this->p - this->b.getLength())*
+                (this->p - this->c.getLength()) > 0) return true;
+            else return false;
+        }
         void triType() {
-            if (AB() - AC() - BC() == 0) {
-                cout << "This is an equilateral triangle.\n";
-                return;
-            }
-            else if ((AB() - AC() == 0) || (AB() - BC() == 0) || (AC() - BC() == 0)) {
-                cout << "This is an isosceles triangle.\n";
-                return;
-            }
-            else if ((AB() *AB() + AC() *AC() == BC() *BC())||(AB() *AB() + BC() *BC() == AC() *AC() )||(BC() *BC() + AC() *AC() == AB() *AB())) {
-                cout << "This is a right triangle.\n";
-                return;
+            double A = a.getLength(), B = b.getLength(), C = c.getLength();
+            const double eps = 1e-9;
+            bool isRight = fabs(A*A + B*B - C*C) < eps ||
+                        fabs(A*A + C*C - B*B) < eps ||
+                        fabs(B*B + C*C - A*A) < eps;
+            bool isEquil = fabs(A-B) < eps && fabs(B-C) < eps;
+            bool isIsoc  = fabs(A-B) < eps || fabs(A-C) < eps || fabs(B-C) < eps;
+
+            if (isEquil)      cout << "\nThis is an equilateral triangle.\n";
+            else if (isIsoc)  cout << "\nThis is an isosceles triangle.\n";
+            else if (isRight) cout << "\nThis is a right triangle.\n";
+            else              cout << "\nThis is a scalene triangle.\n";
+        }
+        double triArea() {return sqrt(this->p*
+                                        (this->p - this->a.getLength())*
+                                        (this->p - this->b.getLength())*
+                                        (this->p - this->c.getLength())); }
+        double triCir() {return this->p*2;}
+        void printStat() {
+            cout << "Coordinates:\n" << fixed << setprecision(2) << this->i << ' ' << this->j << ' ' << this->k;
+            cout << "\nArea : " << fixed << setprecision(2) << this->triArea();
+            cout << "\nCircumference : " << fixed << setprecision(2) << this->triCir();
+        }
+        void triRevolution(double alpha) {
+            tri temp (this->i.Revolve(alpha), this->j.Revolve(alpha), this->k.Revolve(alpha));
+            cout << "After the revolution :\n" << fixed << setprecision(2) << temp.i << temp.j << temp.k; 
+        }
+        void triTranslation(double u, double v) {
+            tri temp (this->i.Translate(u,v), this->j.Translate(u,v), this->k.Translate(u,v));
+            cout << "After the translation :\n" << fixed << setprecision(2) << temp.i << temp.j << temp.k;
+        }
+        void triZoom(double t) {
+            if (t == 0) return;
+            else if (t > 0) {
+                tri temp (this->i.ZoomIn(t),this->j.ZoomIn(t), this->k.ZoomIn(t)); 
+                cout << "\nAfter zoom in :\n"; temp.printStat();
             }
             else {
-                cout << "This is a scalene triangle.\n";
-                return;
-            }
-        }
-
-        double triCir() { return p()*2; }
-
-        double triArea() {
-            return sqrtf(p() * (p() - AB())*(p() - AC())*(p() - BC()));
-        }
-
-        void printStat() {
-            cout << "\nCoordinates :\n A" << this->i << " B" << this->j << " C" << this->k;
-            cout << "\nArea : " << this->triArea();
-            cout << "\nCircumference : " << this->triCir();
-            cout << "\nHow much do you want to scale this triangle?\n";
-        }
-
-        void ZoomIn(double x) {
-            this->i = this->i*x, this->j = this->j*x, this->k = this->k*x;
-            cout << "\nAfter zoom in :\n"; printStat();
-        }
-        
-        void ZoomOut(double x) {
-            this->i = this->i/x, this->j = this->j/x, this->k = this->k/x;
-            cout << "\nAfter zoom out :\n"; this->printStat();
-        }
-
-        void triRevolve(double t) {
-            this->i.Revolve(t), this->j.Revolve(t), this->k.Revolve(t);
-            cout << "\nAfter revolution :\n"; this->printStat();
-        }
-
-        void triTranslate(double a, double b) {
-            this->i.Translate(a,b), this->j.Translate(a,b), this->k.Translate(a,b);
-            cout << "\nAfter translation :\n"; this->printStat();
+                tri temp (this->i.ZoomOut(-t),this->j.ZoomOut(-t), this->k.ZoomOut(-t)); 
+                cout << "\nAfter zoom out :\n"; temp.printStat();
+            }   
         }
 
         void printAll() {
-            this->triType();
-            this->printStat();
-            double a; 
-            while (true) {
-                if (cin >> a) break;
-                else {
-                    cout << "Error! Please try again!\n";
-                    cin.clear();
-                    cin.ignore(10000,'\n');
-                }
-            }
-            if (a > 0) this->ZoomIn(fabs(a));
-            else if (a < 0) this->ZoomOut(fabs(a));
-
-            cout << "\nAfter that, how much do you want to shift the triangle along the x and y axes?\n";
-            double m,n;
-            while (true) {
-                if (cin >> m >> n) break;
-                else {
-                    cout << "Error! Please try again!\n";
-                    cin.clear();
-                    cin.ignore(10000,'\n');
-                }
-            }
-            this->triTranslate(m,n);
-
-            double alpha;
-            cout << "\nAfter that, how many degrees do you want to revolve this triangle?\n";
-            while (true) {
-                if (cin >> alpha) break;
-                else {
-                    cout << "Error! Please try again!\n";
-                    cin.clear();
-                    cin.ignore(10000,'\n');
-                }
-            }
-            this->triRevolve(alpha);
+            triType(); printStat();
+            double p,q;
+            cout << "\nHow do you want to translate this triangle : "; cin >> p >> q;
+            triTranslation(p,q);
+            double rev,zoom;
+            cout << "\nHow many degrees do you want to rotate this triangle : "; cin >> rev;
+            triRevolution(rev);
+            cout << "\nBy what scale factor do you want to enlarge this triangle : "; cin >> zoom;
+            triZoom(zoom);
         }
+} ;
 
-};
-
-int main() {
-    tri t;
-    t.Input();
-    t.printAll();
+int main(){
+    tri p;
+    while (true) {
+        p.Input();
+        if (p.check()) break;
+        else cout << "Error! Cannot build up a triangle, please try again!\n";
+    }
+    p.printAll();
     return 0;
 }
