@@ -30,9 +30,6 @@ ostream& operator<<(ostream& out, const vertex& p) {
     return out;
 }
 
-// ============================================================
-//  translation
-// ============================================================
 translation::translation(double u, double v) : u(u), v(v) {}
 
 vertex translation::apply(const vertex& p) const {
@@ -40,10 +37,6 @@ vertex translation::apply(const vertex& p) const {
 }
 
 string translation::name() const { return "Translation"; }
-
-// ============================================================
-//  rotation
-// ============================================================
 rotation::rotation(const double& degrees) : deg(degrees) {}
 
 vertex rotation::apply(const vertex& p) const {
@@ -54,29 +47,16 @@ vertex rotation::apply(const vertex& p) const {
 
 string rotation::name() const { return "Rotation"; }
 
-// ============================================================
-//  scaling
-// ============================================================
 scaling::scaling(double t) : t(t) {}
-
 vertex scaling::apply(const vertex& p) const {
     if (t < 0) return vertex(p.x / (-t), p.y / (-t));
     else       return vertex(p.x * t,    p.y * t);
 }
-
 string scaling::name() const { return "Scaling"; }
-
-// ============================================================
-//  shape
-// ============================================================
 void shape::printTransformed(const transformation& t) const {
     cout << "\nAfter " << t.name() << " :\n";
     applyAndPrint(t);
 }
-
-// ============================================================
-//  triangle
-// ============================================================
 void triangle::build() {
     a = B.distance(C);
     b = A.distance(C);
@@ -93,15 +73,12 @@ string triangle::triType() const {
         fabs(b*b+c*c-a*a) < eps)                               return "Right";
     return "Scalene";
 }
-
 void triangle::applyAndPrint(const transformation& t) const {
     triangle result(t.apply(A), t.apply(B), t.apply(C));
     result.printInfo();
 }
-
 triangle::triangle() { build(); }
 triangle::triangle(vertex A, vertex B, vertex C) : A(A), B(B), C(C) { build(); }
-
 bool triangle::check() { return (p*(p-a)*(p-b)*(p-c) > 1e-9); }
 
 void triangle::input() {
@@ -122,7 +99,6 @@ void triangle::input() {
 
 double triangle::area() const { return sqrt(p*(p-a)*(p-b)*(p-c)); }
 double triangle::per()  const { return p * 2; }
-
 void triangle::printInfo() const {
     cout << fixed << setprecision(2);
     cout << "Coordinates:\t" << A << ' ' << B << ' ' << C << '\n';
@@ -130,10 +106,6 @@ void triangle::printInfo() const {
     cout << "Area:\t\t"      << area()    << '\n';
     cout << "Perimeter:\t"   << per()     << '\n';
 }
-
-// ============================================================
-//  polygon
-// ============================================================
 bool polygon::collinear(const vertex& a, const vertex& b, const vertex& c) {
     double cross = (b.x - a.x) * (c.y - a.y)
                  - (b.y - a.y) * (c.x - a.x);
@@ -150,7 +122,6 @@ bool polygon::check(const vector<vertex>& points) {
     }
     return true;
 }
-
 void polygon::applyAndPrint(const transformation& t) const {
     vector<vertex> newVerts;
     for (const vertex& v : verticles)
@@ -161,7 +132,6 @@ void polygon::applyAndPrint(const transformation& t) const {
 
 polygon::polygon() {}
 polygon::polygon(const vector<vertex>& points) : verticles(points) {}
-
 void polygon::input() {
     while (true) {
         int n;
@@ -170,12 +140,10 @@ void polygon::input() {
             cout << "Error! Please try again.\n\n";
             continue;
         }
-
         vector<vertex> temp(n);
         for (int i = 0; i < n; i++) {
             cout << "Vertex " << i+1 << ": "; cin >> temp[i];
         }
-
         if (check(temp)) { verticles = temp; break; }
         cout << "Error! 3 consecutive collinear vertices found. Try again.\n\n";
     }
