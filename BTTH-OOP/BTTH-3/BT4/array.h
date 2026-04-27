@@ -73,23 +73,7 @@ private:
     void _merge(bool asc, int lo, int hi);
  
 public:
-    /*
-        Tên phương thức : Array (constructor)
-        ---------------------------------------
-        Input: Không có.
-        ---------------------------------------
-        Output: Khởi tạo đối tượng với data = nullptr
-        và n = 0.
-    */
     Array();
- 
-    /*
-        Tên phương thức : ~Array (destructor)
-        ---------------------------------------
-        Input: Không có.
-        ---------------------------------------
-        Output: Giải phóng bộ nhớ động đã cấp cho data.
-    */
     ~Array();
  
     /*
