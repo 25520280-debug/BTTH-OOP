@@ -4,11 +4,11 @@ void CT::Nhap()
 {
     int n;
     cout << "Nhap so luong giao dich: ";
-    cin >> n;
+    checkInput(n);
     this->gds.reserve(n);
     for (int i = 0; i < n; i++)
     {
-        cout << "Nhap loai giao dich (1: Dat, 2: Nha, 3: Chung cu):";
+        cout << "Nhap loai giao dich (1: Dat, 2: Nha, 3: Chung cu): ";
         int x;
         while (true)
         {
@@ -44,7 +44,6 @@ void CT::Nhap()
             if (temp->flag()) this->date.push_back(temp);
             this->type[2]++;
         }
-        cin.ignore();
     }
 }
 

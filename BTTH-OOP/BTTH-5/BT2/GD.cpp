@@ -9,7 +9,7 @@ bool checkInput(T &test)
         cin.clear();
         cin.ignore(10000, '\n');
     }
-    cin.ignore(10000, '\n');
+    cin.ignore(10000,'\n');
     return true;
 }
 
@@ -81,8 +81,10 @@ double GD::getTien() const
 
 bool GD::flag() const
 {
-    if (this->Nam == 2024 && this->Thang == 12) return true;
-    else return false;
+    if (this->Nam == 2024 && this->Thang == 12)
+        return true;
+    else
+        return false;
 }
 
 ostream &operator<<(ostream &out, const GD &p)
@@ -111,9 +113,15 @@ istream &operator>>(istream &in, Nha &obj)
 {
     obj.NhapInfo();
     cout << "Nhap loai nha (cao cap, thuong): ";
-    getline(in >> ws, obj.type);
+    while (true)
+    {
+        getline(in, obj.type);
+        if (obj.type == "cao cap" || obj.type == "thuong")
+            break;
+        cout << "Loi! Hay nhap lai.\n";
+    }
     cout << "Nhap dia chi nha: ";
-    getline(in >> ws, obj.dc);
+    getline(in, obj.dc);
     obj.TinhTien();
     return in;
 }

@@ -36,7 +36,8 @@ public:
 class Nha : public GD
 {
 private:
-    string type, dc;
+    string type;
+    string dc;
 
 public:
     void TinhTien() override;
