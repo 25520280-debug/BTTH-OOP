@@ -1,7 +1,8 @@
 #include "NhanVien.h"
 using namespace std;
 
-void checkNhap(auto& test)
+template <typename T>
+void checkNhap(T &test)
 {
     while (!(cin >> test))
     {

@@ -1,0 +1,26 @@
+Thong tin chung: 
+- Ma tac vu
+- Ten nguoi yeu cau
+- Don vi yeu cau
+- So token dau vao
+- Thoi gian xu ly (phut)
+- Muc do khan cap ban dau (1-5)
+
+virtual : 
+- TinhChiPhi()
+- TinhDiemRR()
+- TinhDiemUT() (0 - 100) if > 100 = 100 else < 0 = 0
+
+3 tac vu:
+- ContentGenerationTask
+- LearningAnalyticsTask
+- ContentMdoderationTask
+
+
+3 su kien (phuong thuc):
+- ADD_DATA
+- URGENT_UPDATE
+- REVIEW
+~ xuLySuKien()
+
+~ capNhatTrangThai()

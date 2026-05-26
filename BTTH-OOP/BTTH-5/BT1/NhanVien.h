@@ -4,7 +4,6 @@
 #include <vector>
 using namespace std;
 
-void checkNhap(auto& test);
 bool checkLeap(int year);
 int MaxDay(int month, int year);
 
@@ -16,6 +15,7 @@ protected:
         ThangSinh,
         NamSinh;
     double Luong;
+
 public:
     NhanVien();
     virtual ~NhanVien();
@@ -31,6 +31,7 @@ class NVSanXuat : public NhanVien
 private:
     double LuongCanBan;
     int SoSanPham;
+
 public:
     NVSanXuat();
     ~NVSanXuat();

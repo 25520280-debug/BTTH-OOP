@@ -1,5 +1,17 @@
 #include "CongTy.h"
 
+template <typename T>
+void checkNhap(T &test)
+{
+    while (!(cin >> test))
+    {
+        cout << "Error! Please try again.\n\n";
+        cin.clear();
+        cin.ignore(10000, '\n');
+    }
+    cin.ignore(10000, '\n');
+}
+
 CongTy::CongTy() {}
 CongTy::~CongTy()
 {
@@ -11,7 +23,7 @@ void CongTy::Nhap()
 {
     cout << "So nhan vien muon them: ";
     int n;
-    cin >> n;
+    checkNhap(n);
 
     for (int i = 0; i < n; i++)
     {
