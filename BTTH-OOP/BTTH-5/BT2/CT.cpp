@@ -16,6 +16,7 @@ void CT::Nhap()
             if (x == 1 || x == 2 || x == 3)
                 break;
             cout << "Loi! Xin nhap lai.\n\n";
+            cin.clear(); cin.ignore(10000,'\n');
         }
         if (x == 1)
         {
@@ -55,6 +56,11 @@ void CT::Xuat()
     cout << this->type[1] << '\n';
     cout << "GD Chung cu: ";
     cout << this->type[2] << "\n\n";
+
+    for (GD* x : this->gds) {
+        cout << "So tien cua giao dich " << x->getMa() << " : " << x->getTien() << '\n';
+    }
+
     cout << "TB GD Chung cu: ";
     if (this->type[2] != 0)
         cout << this->TBTCC / this->type[2] << '\n';

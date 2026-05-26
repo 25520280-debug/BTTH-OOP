@@ -13,20 +13,58 @@ bool checkInput(T &test)
     return true;
 }
 
+bool checkLeap(int year)
+{
+    if ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0)
+        return 1;
+    else
+        return 0;
+}
+
+int MaxDay(int month, int year)
+{
+    switch (month)
+    {
+    case 2:
+        if (checkLeap(year))
+            return 29;
+        else
+            return 28;
+    case 1:
+    case 3:
+    case 5:
+    case 7:
+    case 8:
+    case 10:
+    case 12:
+        return 31;
+    default:
+        return 30;
+    }
+}
+
 void GD::NhapInfo()
 {
     cout << "Nhap ma giao dich: ";
     getline(cin >> ws, this->MaGD);
     cout << "Nhap nam: ";
-    checkInput(this->Nam);
+    while (true) {checkInput(this->Nam);
+    if (this->Nam > 0) break; }
     cout << "Nhap thang: ";
-    checkInput(this->Thang);
+
+    while (true) {checkInput(this->Thang);
+    if (this->Thang > 0 && this->Thang <= 12)break;}
     cout << "Nhap ngay: ";
-    checkInput(this->Ngay);
+    do checkInput(this->Ngay);
+    while (this->Ngay <= 0 ||
+           this->Ngay > MaxDay(this->Thang, this->Nam));
     cout << "Nhap dien tich: ";
-    checkInput(this->S);
+    while (true)
+    {checkInput(this->S);
+    if (this->S >= 0) break;}
     cout << "Nhap gia: ";
-    checkInput(this->Gia);
+    while (true) {checkInput(this->Gia);
+    if (this->Gia >= 0) break;}
 }
 
 void Dat::TinhTien()
@@ -77,6 +115,11 @@ void CC::TinhTien()
 double GD::getTien() const
 {
     return this->Tien;
+}
+
+string GD::getMa()
+{
+    return this->MaGD;
 }
 
 bool GD::flag() const

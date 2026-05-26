@@ -6,6 +6,9 @@ using namespace std;
 template <typename T>
 bool checkInput(T &test);
 
+bool checkLeap(int year);
+int MaxDay(int month, int year);
+
 class GD
 {
 protected:
@@ -19,6 +22,7 @@ public:
     virtual void TinhTien() = 0;
     void NhapInfo();
     double getTien() const;
+    string getMa();
     friend ostream &operator<<(ostream &out, const GD &p);
     bool flag() const;
 };
